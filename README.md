@@ -6,7 +6,7 @@ Using [BERT-pytorch](https://github.com/codertimo/BERT-pytorch) for pretrained, 
 ### Train
 Using [bert_ensemble_train.py](https://github.com/yuanxiaoheben/DeepDuSite/blob/master/bert_pytorch/bert_ensemble_train.py) for training.
  ``` shell
- python bert_ensemble_para.py \
+ python bert_ensemble_train.py \
  --train_corpus train_label.csv \
  --validation_corpus valid_label.csv \
  --bert_path bert.model.ep9 \
