@@ -45,7 +45,7 @@ def data_generate(data_set):
 
 
 
-def training_loop(model, loss, optimizer, epochs,batch_size):
+def training_loop(model, loss, optimizer, epochs,batch_size, saved_path):
     train_loader = DataLoader(dataset=train_dataset,batch_size=batch_size,shuffle=True)
     for j in range(epochs):
         loss_sum = 0
@@ -56,9 +56,6 @@ def training_loop(model, loss, optimizer, epochs,batch_size):
             bert_seq,bert_label,sea, target = data
             if target.size(0) <= 1:
                 continue
-            #input_data.enable_grad()
-            #labels.enable_grad()
-
             model.zero_grad()
             output = model(bert_seq,bert_label, sea)
             lossy = loss(output, target)
@@ -67,11 +64,12 @@ def training_loop(model, loss, optimizer, epochs,batch_size):
             
 
             loss_sum = loss_sum + lossy.detach().cpu().numpy()
-        torch.save(model, 'ensemble0820a/bert.ensemble.ep' + str(j+1))
-        print( "Epochs %i; Loss %f, Validation Accuracy %f" %(j+1, loss_sum,test_model(valid_dataset, model, th=0.5)))
+        torch.save(model, os.path.join(saved_path, 'bert.ensemble.ep'+ str(j+1)))
+        print( "Epochs %i; Loss %f, Validation Accuracy %f" %(j+1, loss_sum, test_model(valid_dataset, model, batch_size, th=0.5)))
         
 
 def test_model(xy_set, model, batch_size, th=0.5):
+    model.eval()
     data_loader = DataLoader(dataset=xy_set,batch_size=batch_size,shuffle=True)
     hit = 0
     total = 0
@@ -184,7 +182,7 @@ classifiy_model = DeepSEA_BERT(bert_model, args.deepsea_out_size, args.dropout_p
 #classifiy_model = torch.load('output/bert.fine_tune.ep9').cuda()
 
 
-print('Epochs %i; Batch_size %i, Learning Rate %f,dropout_prob %f' %(args.epochs, args.epochs, args.learning_rate, args.dropout_prob))
+print('Epochs %i; Batch_size %i, Learning Rate %f,dropout_prob %f' %(args.epochs, args.batch_size, args.learning_rate, args.dropout_prob))
 loss = nn.BCELoss()
 optimizer = torch.optim.Adam(classifiy_model.parameters(), lr=args.learning_rate)
-training_loop(classifiy_model, loss, optimizer, args.epochs, args.batch_size)
+training_loop(classifiy_model, loss, optimizer, args.epochs, args.batch_size, args.saved_path)
