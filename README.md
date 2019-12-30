@@ -12,3 +12,8 @@ Using [bert_ensemble_train.py](https://github.com/yuanxiaoheben/DeepDuSite/blob/
  --bert_path bert.model.ep9 \
  --saved_path ./
  ```
+ 
+ ### Test
+ 
+ 
+ 
