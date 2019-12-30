@@ -16,7 +16,7 @@ Using [bert_ensemble_train.py](https://github.com/yuanxiaoheben/DeepDuSite/blob/
  ### Test
  Using [bert_ensemble_test.py](https://github.com/yuanxiaoheben/DeepDuSite/blob/master/bert_pytorch/bert_ensemble_test.py) for test.
  ``` shell
- python bert_ensemble_train.py \
+ python bert_ensemble_test.py \
  --test_corpus test_label.csv \
  --model_path bert.ensemble.ep1 
  ```
